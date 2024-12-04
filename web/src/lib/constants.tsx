@@ -94,10 +94,12 @@ export const menuOptions = [
   { name: "Dashboard", Component: Home, href: "/dashboard" },
   { name: "Workflows", Component: Workflows, href: "/workflows" },
 
-  { name: "Editor", Component: Editor, href: "/editor" },
+  { name: "Media Editor", Component: Editor, href: "/editor" },
   // { name: "Connections", Component: Category, href: "/connections" },
 
   // { name: "Templates", Component: Templates, href: "/templates" },
   { name: "Settings", Component: Settings, href: "/settings" },
   { name: "Billing", Component: Payment, href: "/billing" },
 ];
+
+export const IS_PAID_TOOL = true;
