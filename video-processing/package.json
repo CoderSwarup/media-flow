@@ -1,0 +1,24 @@
+{
+  "name": "processer",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-ecs": "^3.592.0",
+    "@aws-sdk/client-s3": "^3.592.0",
+    "@prisma/client": "^6.1.0",
+    "bullmq": "^5.34.4",
+    "dotenv": "^16.4.7",
+    "ioredis": "^5.4.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.1.0"
+  }
+}

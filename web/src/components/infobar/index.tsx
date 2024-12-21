@@ -27,7 +27,7 @@ const InfoBar = (props: Props) => {
 
     if (response) {
       setTier(response.tier!);
-      setCredits(response.credits!);
+      setCredits(response.credits.toString());
     }
   };
 

@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Caption {
+  id        String   @id
+  language  String
+  url       String
+  videoId   String
+  createdAt DateTime @default(now())
+  Video     Video    @relation(fields: [videoId], references: [id])
+}
+
+model Timeline {
+  id            String   @id
+  title         String
+  description   String?
+  startTime     Float
+  endTime       Float
+  isAIGenerated Boolean  @default(false)
+  videoId       String
+  createdAt     DateTime @default(now())
+  Video         Video    @relation(fields: [videoId], references: [id])
+}
+
+model User {
+  id           String   @id
+  clerkId      String   @unique
+  name         String?
+  email        String   @unique
+  profileImage String?
+  tier         String   @default("Free")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  credits      Int      @default(10)
+  Video        Video[]
+}
+
+model Video {
+  id             String          @id
+  title          String
+  description    String?
+  originalUrl    String
+  thumbnailUrl   String?
+  status         VideoStatus     @default(QUEUE)
+  userId         String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime
+  Caption        Caption[]
+  Timeline       Timeline[]
+  User           User            @relation(fields: [userId], references: [id])
+  VideoAnalytics VideoAnalytics?
+}
+
+model VideoAnalytics {
+  id              String   @id
+  averageViewTime Float    @default(0)
+  totalViews      Int      @default(0)
+  videoId         String   @unique
+  createdAt       DateTime @default(now())
+  Video           Video    @relation(fields: [videoId], references: [id])
+}
+
+enum VideoStatus {
+  QUEUE
+  PROCESSING
+  PROCESSED
+  FAILED
+}

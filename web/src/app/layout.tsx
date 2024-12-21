@@ -30,6 +30,7 @@ export default function RootLayout({
               storageKey="Fuzzie"
             >
               {children}
+              <Toaster />
             </ThemeProvider>
           </BillingProvider>
           <Toaster position="bottom-right" />

@@ -15,15 +15,86 @@ datasource db {
 
 
 model User {
-  id                    Int                    @id @default(autoincrement())
-  clerkId               String                 @unique
-  name                  String?
-  email                 String                 @unique
-  profileImage          String?
-  tier                  String?                @default("Free")
-  credits               String?                @default("10")
+  id            String       @id @default(uuid())
+  clerkId       String    @unique
+  name          String?
+  email         String    @unique
+  profileImage  String?
+  tier          String    @default("Free")
+  credits       Int       @default(10)
 
-  
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
+  videos        Video[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Video {
+  id            String       @id @default(uuid())
+  title         String
+  description   String?
+  originalUrl   String    
+  thumbnailUrl  String?        
+  status        VideoStatus     @default(QUEUE)
+  captions      Caption[]       
+  timelines     Timeline[]      
+  analytics     VideoAnalytics? 
+
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+
+
+model Caption {
+  id            String       @id @default(uuid())
+  language      String    
+  url           String    
+  videoId       String
+  video         Video     @relation(fields: [videoId], references: [id])
+
+  createdAt     DateTime  @default(now())
+}
+
+model Timeline {
+  id            String       @id @default(uuid())
+  title         String
+  description   String?
+  startTime     Float     
+  endTime       Float     
+  isAIGenerated Boolean   @default(false)
+  videoId       String
+  video         Video     @relation(fields: [videoId], references: [id])
+
+  createdAt     DateTime  @default(now())
+}
+
+// model SharedIframe {
+// id            String       @id @default(uuid())
+//   iframeUrl     String    
+//   restrictions  String?   
+//   videoId       String
+//   video         Video     @relation(fields: [videoId], references: [id])
+
+//   createdAt     DateTime  @default(now())
+// }
+
+model VideoAnalytics {
+  id            String       @id @default(uuid())
+  averageViewTime Float   @default(0) 
+  totalViews    Int       @default(0)
+  videoId       String       @unique
+  video         Video     @relation(fields: [videoId], references: [id])
+
+  createdAt     DateTime  @default(now())
+}
+
+enum VideoStatus {
+  QUEUE
+  PROCESSING
+  PROCESSED
+  FAILED
 }
